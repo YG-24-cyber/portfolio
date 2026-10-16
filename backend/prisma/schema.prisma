@@ -1,0 +1,108 @@
+datasource db {
+  provider = "postgresql"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum Role {
+  SUPER_ADMIN
+}
+
+enum ProjectStatus {
+  ACTIVE
+  PRODUCTION
+}
+
+enum MessageStatus {
+  UNREAD
+  REVIEWED
+  ARCHIVED
+}
+
+model Admin {
+  id           String   @id @default(uuid())
+  username     String   @unique
+  email        String   @unique
+  passwordHash String
+  displayName  String
+  role         Role     @default(SUPER_ADMIN)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@map("admins")
+}
+
+model Project {
+  id               String        @id @default(uuid())
+  title            String
+  slug             String        @unique
+  category         String
+  description      String        @db.Text
+  techStack        String[]
+  status           ProjectStatus @default(ACTIVE)
+  isFeatured       Boolean       @default(false)
+  liveUrl          String?
+  githubUrl        String?
+  previewArchetype String?
+  order            Int           @default(0)
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+
+  @@map("projects")
+}
+
+model BlogPost {
+  id          String   @id @default(uuid())
+  title       String
+  slug        String   @unique
+  category    String
+  excerpt     String   @db.Text
+  body        String   @db.Text
+  tags        String[]
+  readTime    String
+  isFeatured  Boolean  @default(false)
+  publishedAt DateTime @default(now())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("blog_posts")
+}
+
+model CVRelease {
+  id                   String   @id @default(uuid())
+  versionTag           String   @unique
+  fileName             String
+  targetSpecialization String
+  fileSize             String
+  checksumSha256       String
+  changelog            String   @db.Text
+  isActive             Boolean  @default(false)
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+
+  @@map("cv_releases")
+}
+
+model SystemTelemetry {
+  id               String    @id @default(uuid())
+  totalCvDownloads Int       @default(708)
+  lastCvDownloadAt DateTime?
+  updatedAt        DateTime  @updatedAt
+
+  @@map("system_telemetry")
+}
+
+model ContactMessage {
+  id        String        @id @default(uuid())
+  name      String
+  email     String
+  topic     String
+  message   String        @db.Text
+  status    MessageStatus @default(UNREAD)
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+
+  @@map("contact_messages")
+}

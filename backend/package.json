@@ -1,0 +1,44 @@
+{
+  "name": "portfolio-backend",
+  "version": "1.0.0",
+  "description": "Production-grade modular Node.js + Express backend foundation for Tamrat G/her Portfolio",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch-path=src server.js",
+    "build": "npx prisma generate --config prisma7.config.ts",
+    "db:migrate:deploy": "npx prisma migrate deploy --config prisma7.config.ts",
+    "db:migrate:status": "npx prisma migrate status --config prisma7.config.ts",
+    "db:seed": "node prisma/seed.js",
+    "db:studio": "npx prisma studio"
+  },
+  "prisma": {
+    "seed": "node prisma/seed.js"
+  },
+  "keywords": [
+    "nodejs",
+    "express",
+    "postgresql",
+    "portfolio-backend"
+  ],
+  "author": "Tamrat G/her",
+  "license": "ISC",
+  "dependencies": {
+    "@prisma/adapter-pg": "^7.10.1",
+    "@prisma/client": "^7.10.1",
+    "bcryptjs": "^3.0.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "express-rate-limit": "^8.7.1",
+    "helmet": "^8.0.0",
+    "jsonwebtoken": "^9.0.3",
+    "morgan": "^1.10.0",
+    "pg": "^8.23.1"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.5",
+    "prisma": "^7.10.1"
+  }
+}
